@@ -1,0 +1,25 @@
+{
+  "exhibit": "E03",
+  "what": "HouseBets road limits (GET /housegames/limits/road)",
+  "source": {
+    "file": "data/housebets-road-phaseA-auto1-6500rounds.json",
+    "sha256": "56e58a1c3316d8f3a79c6558e61aa5c61eea8e81ce6d05a8af4b94b98d885690",
+    "field": "meta.staticReads['/limits/road']"
+  },
+  "answer": {
+    "game": "road",
+    "maxBet": 20000,
+    "maxWin": 1000000,
+    "minBet": 0.01,
+    "source": "server-config",
+    "unit": "USD",
+    "wallet": {
+      "currency": 1,
+      "decimals": 8,
+      "maxBet": 20006.20192259,
+      "maxWin": 1000310.0961298,
+      "minBet": 0.01000311,
+      "symbol": "USDT"
+    }
+  }
+}

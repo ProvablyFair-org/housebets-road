@@ -1,0 +1,49 @@
+{
+  "exhibit": "E06",
+  "what": "Phase D empty-seed control: the server's answer to POST /change_seed {clientSeed: \"\"}",
+  "source": {
+    "file": "data/supplementary/housebets-road-phaseD-playerseeds-200rounds.json",
+    "sha256": "e2e81e4388d1b0973347c39f7964689082f5c631fbc85eec0a7f53a45ff6b5e6",
+    "field": "meta.emptySeedControl"
+  },
+  "record": {
+    "at": "2026-10-13T17:35:17.010Z",
+    "request": {
+      "method": "POST",
+      "path": "/change_seed",
+      "body": {
+        "gameType": "road",
+        "clientSeed": ""
+      }
+    },
+    "status": 400,
+    "accepted": false,
+    "response": {
+      "error": "an error occurred"
+    },
+    "pairBefore": {
+      "clientSeed": "pfroadb5d276925cda908af4c128ae32dd46fe",
+      "hashedServerSeed": "f2802bacd97808ead72a64dd50a3ba93e1eb0b3d4ad1d578fabb2a382ebcd1f8",
+      "hashedNextServerSeed": "50efb14ba88f05856203ceb610c595440ec307749487a21dd22c9479ebb03be0",
+      "lastSeed": "",
+      "nonce": 0,
+      "totalBets": 0,
+      "cursor": 0,
+      "id": 104457,
+      "_readAt": "2026-10-13T17:35:17.010Z"
+    },
+    "pairAfter": {
+      "clientSeed": "pfroadb5d276925cda908af4c128ae32dd46fe",
+      "hashedServerSeed": "f2802bacd97808ead72a64dd50a3ba93e1eb0b3d4ad1d578fabb2a382ebcd1f8",
+      "hashedNextServerSeed": "50efb14ba88f05856203ceb610c595440ec307749487a21dd22c9479ebb03be0",
+      "lastSeed": "",
+      "nonce": 0,
+      "totalBets": 0,
+      "cursor": 0,
+      "id": 104457,
+      "_readAt": "2026-10-13T17:35:18.355Z"
+    },
+    "clientSeedAfter": "pfroadb5d276925cda908af4c128ae32dd46fe",
+    "revealCommitOk": null
+  }
+}

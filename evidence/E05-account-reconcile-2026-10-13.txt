@@ -1,0 +1,71 @@
+# E05 — HouseBets account reconciliation: output of `python3 -I reconcile-full.py --ledger ledger/ledger-2026-10-13-final.json --before 986.84718000` run in the HouseBets workshop's capture-full-2026-10-12/
+# reconcile-full.py sha256 77190e7e75a68f494d20cb2eade78488b32b0af88cd9e77113b7e48b4a9ee10c; ledger-2026-10-13-final.json sha256 0be7ab44b9f3aedf5ed7d6db078f96b596a29e3621c7003b459614875c065864 (read 2026-10-13T20:06:53.464Z)
+# exit 0; per-dataset rows = rounds, staked, paid, net (exact decimals of the JSON text)
+dataset                                                                  rounds        staked          paid           net
+../capture-2026-10-12/baccarat/housebets-baccarat-450rounds.json            450         59.40   65.33636918   +5.93636918
+../capture-2026-10-12/blackjack/housebets-blackjack7-400rounds.json         400         27.78   25.40260475   -2.37739525
+../capture-2026-10-12/coinflip/housebets-coinflip-sp1-552bets.json          552    5.52171672    5.88157158   +0.35985486
+../capture-2026-10-12/dice/dice-probe-1791811922446.json                      4    0.04001244    0.01143146   -0.02858098
+../capture-2026-10-12/dice/housebets-dice-sp1-480bets.json                  480    4.80149280    3.64075735   -1.16073545
+../capture-2026-10-12/hilo/housebets-hilo-full-77rounds-withopen.json        77          1.54    1.51913221   -0.02086779
+../capture-2026-10-12/keno2/housebets-keno2-sp1-480bets.json                480    4.80149280    5.26119990   +0.45970710
+../capture-2026-10-12/limbo/housebets-limbo-sp1-500bets.json                500    5.00155500    2.21308783   -2.78846717
+../capture-2026-10-12/mines/housebets-mines-full-83rounds-withopen.json      82          1.64    0.76123332   -0.87876668
+../capture-2026-10-12/plinko2/housebets-plinko2-sp1-540bets.json            540    5.40167940    6.20912799   +0.80744859
+../capture-2026-10-12/road/housebets-road-full-67rounds-withopen.json        67          1.34    0.70713828   -0.63286172
+../capture-2026-10-12/roulette2/housebets-roulette2-sp1-500bets.json        500    5.98185978    5.89183179   -0.09002799
+phaseA/housebets-baccarat-6500rounds.json                                  6500        857.96  845.86598549  -12.09401451
+phaseA/housebets-blackjack7-6000rounds.json                                6000        423.76  388.28344010  -35.47655990
+phaseA/housebets-coinflip-sp1-6584bets.json                                6584   65.86047624   63.86288727   -1.99758897
+phaseA/housebets-dice-sp1-6686bets.json                                    6686   66.88079346   63.79004797   -3.09074549
+phaseA/housebets-hilo-phaseA-auto1-6500rounds.json                         6500        130.00  128.37756964   -1.62243036
+phaseA/housebets-keno2-sp1-6678bets.json                                   6678   66.80076858   59.73470852   -7.06606006
+phaseA/housebets-limbo-sp1-6480bets.json                                   6480   64.82015280   50.52980735  -14.29034545
+phaseA/housebets-mines-phaseA-auto1-8500rounds.json                        8500        170.00  168.15749796   -1.84250204
+phaseA/housebets-plinko2-sp1-6431bets.json                                 6431   64.33000041   64.22223712   -0.10776329
+phaseA/housebets-road-phaseA-auto1-6500rounds.json                         6500        130.00    127.977750     -2.022250
+phaseA/housebets-roulette2-sp1-6475bets.json                               6475   77.65414293   78.21431709   +0.56017416
+phases-10usd/housebets-baccarat-phaseC-10usd-300rounds.json                 300          3000  3039.33087295  +39.33087295
+phases-10usd/housebets-blackjack7-phaseE-10usd-200rounds.json               200          2310          2270           -40
+phases-10usd/housebets-coinflip-phaseC-safe-10usd-200bets.json              200          2000      2002.578        +2.578
+phases-10usd/housebets-dice-phaseC-safe-10usd-200bets.json                  200          2000          1914           -86
+phases-10usd/housebets-hilo-phaseC-elevated-10usd-200rounds.json            200          2000  1911.7289278   -88.2710722
+phases-10usd/housebets-keno2-phaseC-10usd-200bets.json                      200          2000        2038.0         +38.0
+phases-10usd/housebets-limbo-phaseC-safe-10usd-200bets.json                 200          2000          1958           -42
+phases-10usd/housebets-mines-phaseC-elevated-10usd-150rounds.json           150          1500     1515.9375      +15.9375
+phases-10usd/housebets-plinko2-phaseC-10usd-200bets.json                    200          2000        2145.7        +145.7
+phases-10usd/housebets-road-phaseC-elevated-10usd-150rounds.json            150          1500     1485.0000      -15.0000
+phases-10usd/housebets-roulette2-phaseC-safe-5usd-200bets.json              200          2000          1995            -5
+phases/housebets-baccarat-phaseC-300rounds.json                             300           600  635.76869964  +35.76869964
+phases/housebets-baccarat-phaseD-200rounds.json                             200         26.36   27.67599944   +1.31599944
+phases/housebets-blackjack7-phaseD-100rounds.json                           100          2.42    1.90731919   -0.51268081
+phases/housebets-blackjack7-phaseE-200rounds.json                           200           446           443            -3
+phases/housebets-coinflip-phaseC-250bets.json                               250    250.077750  241.63512516   -8.44262484
+phases/housebets-coinflip-phaseD-200bets.json                               200    2.00062200    2.20316763   +0.20254563
+phases/housebets-dice-phaseC-250bets.json                                   250    250.077750    246.076506     -4.001244
+phases/housebets-dice-phaseD-200bets.json                                   200    2.00062200    2.16908640   +0.16846440
+phases/housebets-hilo-phaseC-elevated-200rounds.json                        200           400  420.62799988  +20.62799988
+phases/housebets-hilo-phaseD-playerseeds-200rounds.json                     200          4.00    4.33939994   +0.33939994
+phases/housebets-hilo-phaseE-multistep-600rounds.json                       600         12.00   14.25307692   +2.25307692
+phases/housebets-keno2-phaseC-200bets.json                                  200    200.062200  182.97688812  -17.08531188
+phases/housebets-keno2-phaseD-200bets.json                                  200    2.00062200    1.57286031   -0.42776169
+phases/housebets-limbo-phaseC-250bets.json                                  250    250.077750  261.44128296  +11.36353296
+phases/housebets-limbo-phaseD-200bets.json                                  200    2.00062200    1.46595571   -0.53466629
+phases/housebets-mines-phaseC-elevated-150rounds.json                       150           300      305.2500       +5.2500
+phases/housebets-mines-phaseD-playerseeds-200rounds.json                    200          4.00    4.67289098   +0.67289098
+phases/housebets-mines-phaseE-multistep-600rounds.json                      600         12.00   10.01092414   -1.98907586
+phases/housebets-plinko2-phaseB-1000bets.json                              1000   10.00311000    9.52095748   -0.48215252
+phases/housebets-plinko2-phaseC-200bets.json                                200    200.062200  198.09158733   -1.97061267
+phases/housebets-plinko2-phaseD-200bets.json                                200    2.00062200    2.05823897   +0.05761697
+phases/housebets-road-phaseC-elevated-150rounds.json                        150           300      301.1250       +1.1250
+phases/housebets-road-phaseD-playerseeds-200rounds.json                     200          4.00      3.812250     -0.187750
+phases/housebets-road-phaseE-multistep-600rounds.json                       600         12.00   10.99719038   -1.00280962
+phases/housebets-roulette2-phaseC-250bets.json                              250    250.077750    252.078372     +2.000622
+phases/housebets-roulette2-phaseD-200bets.json                              200    2.23069353    2.26070286   +0.03000933
+TOTAL                                                                     86966  28096.76845689  28024.11851634  -72.64994055
+
+ledger: 86979 entries = 86966 captured rounds matched exactly + 0 open + 13 from 10 Oct; unexplained 0
+wallet cash balance after (server, 8 dp): 914.19723945   read 2026-10-13T20:06:53.464Z
+balance before = after - net -72.64994055 + open stakes 0 = 986.84718000
+first answer of the day 2026-10-12T13:31:59.103Z: balance 986.8372 (4 dp) · last answer 2026-10-13T19:05:28.663Z: balance 914.1972 (4 dp)
+RECONCILED

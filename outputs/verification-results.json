@@ -1,0 +1,191 @@
+{
+  "suite": "housebets-road",
+  "profileSha256": "e4c4bfef098b232b0ecb2bc92e6dc67365ab058aaf7b10b30dc9eb96f65d86a0",
+  "verdict": "PROVABLY FAIR — Full Pass",
+  "summary": {
+    "passes": 22,
+    "fails": 0,
+    "overstated": 0,
+    "operatorFlags": 0,
+    "captureFlags": 0,
+    "packageChecks": 5,
+    "excluded": [
+      "ROAD-27"
+    ]
+  },
+  "steps": [
+    {
+      "id": "ROAD-01",
+      "status": "PASS",
+      "origin": null,
+      "detail": "sha256(utf8(revealed)) == committed (E01 encoding): 130/130 Phase A seeds, 160/160 across A, C, C $10, D, E and the 12 Oct file; pre-capture reveals 6/6; 0 rounds on an unrevealed seed"
+    },
+    {
+      "id": "ROAD-02",
+      "status": "PASS",
+      "origin": null,
+      "detail": "A 129/129 links, pre-capture anchor true, last next-hash == the pair active after the capture true; C 2/2 links, pre-capture anchor true, last next-hash == the pair active after the capture true; C $10 2/2 links, pre-capture anchor true, last next-hash == the pair active after the capture true; D 3/3 links, pre-capture anchor true, last next-hash == the pair active after the capture true; E 11/11 links, pre-capture anchor true, last next-hash == the pair active after the capture true — recomputed from the raw hashes, never from the capture's booleans"
+    },
+    {
+      "id": "ROAD-03",
+      "status": "PASS",
+      "origin": null,
+      "detail": "130/130 Phase A epochs: every round's bet answer carries the hash read before it, and its settled fairness block the epoch's hash and client seed; C 3/3, C $10 3/3, D 4/4, E 12/12; every server answer of a round (bet, each action, game_detail) carries the same hash, client seed and version as the settled block the recompute uses: 7666/7666 rounds (A, C, C $10, D, E, 12 Oct); the capture's own copies (round id, client seed and hash read before the round, outcome label) == the server's answer: 7666/7666"
+    },
+    {
+      "id": "ROAD-04",
+      "status": "PASS",
+      "origin": null,
+      "detail": "A 130/130, C 3/3, C $10 3/3, D 4/4, E 12/12 epochs: nonces exactly 1..50, once each, no gap, repeat or reorder, and N == the server's nonce read at rotation; every round's nonce == the server's count before it + 1: 7600/7600 (12 Oct 66/66); every server answer of a round carries the settled nonce and round id: 7666/7666 rounds"
+    },
+    {
+      "id": "ROAD-05",
+      "status": "PASS",
+      "origin": null,
+      "detail": "Phase A 6500 rounds / 130 seeds / 130 epochs (by the hash in the server's bet answer), every epoch exactly 50: true; 6500/6500 on a revealed epoch; 6500/6500 one auto bet naming ONE lane at 0.02; supplementary C 150 in 3 whole epochs of 50: true, C $10 150 in 3 whole epochs of 50: true, D 200 in 4 whole epochs of 50: true, E 600 in 12 whole epochs of 50: true — against src/loader.ts constants, never meta; the 12 Oct file is not part of this population (its rounds are recomputed one by one in ROAD-03, 04, 07, 10, 11, 13, 14, 17 and 31 and reconciled in ROAD-16, never counted here)"
+    },
+    {
+      "id": "ROAD-06",
+      "status": "PASS",
+      "origin": null,
+      "detail": "a wrong client seed changes 6428/6500 Phase A trap fields (72 identical, expected 65.12 — the easy 1-trap fields — bound 110.47); Phase D: player-set seeds [\"provablyfair-1\",\"provablyfair-2\",\"player-seed-abc\",\"1234567890\"] (predictable, disclosed DL-1, all 4 epochs exposed), 200/200 rounds replay clean, 200/200 fields differ under the previous client seed (expected identical 1.76); phases A, C, C $10, E client seeds LABELLED by the capture as 'node:crypto randomBytes(16) hex' 148/148 (a label match; a redacted reference copy of the capture code is in capture/, the as-run game script is held privately, DL-1), each drawn at or after the read of the hash it plays under 148/148; empty-seed control: server refused, HTTP 400 (E06)"
+    },
+    {
+      "id": "ROAD-07",
+      "status": "PASS",
+      "origin": null,
+      "detail": "the trap field derived from the revealed seed (E01: HMAC-SHA256 blocks, 4-byte draws, floor(u·(25 − i)/2^32) among the slots left; difficulty m = the first m picks) == the served field IN DRAW ORDER: Phase A 6500/6500 (coverage == expectedRounds 6500), C 150/150, C $10 150/150, D 200/200, E 600/600, 12 Oct 66/66; served trapLane == the first deadly lane derived 7666/7666; Phase A auto replay (position, outcome, hit from the derived field) 6500/6500; rounds with every row clean A 6500/6500, C 150/150, C $10 150/150, D 200/200, E 600/600, 12 Oct 66/66 (12 Oct: the 66 records of the 67 recorded whole, the 24 h round included; 1 record not replayed — the round resumed after the capture's repeated step requests — counted in ROAD-16)"
+    },
+    {
+      "id": "ROAD-08",
+      "status": "PASS",
+      "origin": null,
+      "detail": "count of src/rng.ts positionFromU over the 2^32 values of u, taken from the two ends of each outcome's interval (found by binary search and checked through the function; the values between the ends are not enumerated, so the count is exact for a map that is monotone in u) for every range n = 16 … 25 (the picks of the four difficulties): counts sum to 2^32, the interval ends are in order, every position gets ⌊2^32/n⌋ or ⌈2^32/n⌉: true; worst |P(j) − 1/n| = 2.1913e-10 (n = 17) ≤ 2^-32 = 2.3283e-10 (no rejection; u·n/2^32 is exact in binary64)"
+    },
+    {
+      "id": "ROAD-09",
+      "status": "PASS",
+      "origin": null,
+      "detail": "the 6 worked examples of HouseBets' published spec (E01 \"examples\": field and first deadly lane) 6/6; its published multipliers (E01 \"payouts\") 81/81; captured round 0 (daredevil, trap lane 2, ×1.65) recomputes: true; also tests/rng.test.ts"
+    },
+    {
+      "id": "ROAD-10",
+      "status": "PASS",
+      "origin": null,
+      "detail": "lane L deadly iff slot L − 1 is a trap: a trap ends on exactly the first deadly lane walked, a win crosses none, the castle is the last lane — from the recomputed field, never the outcome label: 7666/7666 rounds (A, C, C $10, D, E, 12 Oct); a step onto a derived deadly lane ends the round with payout 0: 418/418; auto bets settle as the derived field says: 7016/7016; no answer places Hubie past the difficulty's lanes count: true; Phase A: 5248/5248 wins crossed exactly lane 1, 1252/1252 traps hit lane 1 with position 0"
+    },
+    {
+      "id": "ROAD-11",
+      "status": "PASS",
+      "origin": null,
+      "detail": "payout == floor(stake × 99·C(25,k) / (100·C(25−m,k))) on the 1e-8 grid, exact BigInt, 0 on a trap (E01 rules \"a payout is rounded down to the wallet's smallest unit (1e-8) once\"): 7665/7665 rounds (A 6500/6500, 12 Oct 65/65; the round finished under the 24 h rule is scored in ROAD-31); the settled round record (roundId, stake, payout) agrees: 7665/7665; every amount sent and served on the 1e-8 grid (an off-grid value fails, it is never rounded onto the grid): 7666/7666 rounds"
+    },
+    {
+      "id": "ROAD-12",
+      "status": "PASS",
+      "origin": null,
+      "detail": "Phase C 150 rounds on easy, one lane, at 2 (= 100 × the Phase A stake 0.02: true): 150/150 replay clean (field, outcome, multiplier, payout), stake as sent and settled 150/150, 146 elevated wins (≥ 100); $10 set 150 rounds at 10: 150/150 clean, stake 150/150, 144 wins (≥ 100); the derivation takes no stake input"
+    },
+    {
+      "id": "ROAD-13",
+      "status": "PASS",
+      "origin": null,
+      "detail": "served multiplier == 99·C(25,k) / (100·C(25−m,k)) as the nearest binary64 (E01 \"multiplier\"; E02 rulesRoadReturn \"0.99 × C(25, k) / C(25 − m, k)\"): every winning settle 5932/5932, every open lane of a stepped round 2194/2194 (multiplier and value; A, C, C $10, D, E, 12 Oct); E01's published table 81/81 cells; computed from (m, k) alone — no served odds field is read by the derivation"
+    },
+    {
+      "id": "ROAD-14",
+      "status": "PASS",
+      "origin": null,
+      "detail": "exact fractions over the 81 published (difficulty, lanes) cells: strictly increasing in lanes 77/77, in trap count 57/57, every multiplier > 1 81/81; max win 1000310.0961298 USDT == E03 wallet maxWin: true; every settled win within it 7666/7666; the next-lane offer follows the max-win rule on every open step 2194/2194; auto stops at the cap: 0; answers offering a max-win stop: 0 of the 10509 request answers of the replayed rounds — the cap branch (a lane not walked, the round cashed out at its value) is UNWITNESSED: no captured round came near the max win, so the branch is declared unwitnessed (DL-10), as the rule allows: PASS with the branch declared"
+    },
+    {
+      "id": "ROAD-15",
+      "status": "PASS",
+      "origin": null,
+      "detail": "Phase A: 4/4 difficulties played exactly 1625 times (plan in src/loader.ts; floor 50); Phase E lane by lane: easy 150 rounds, 23 distinct depths at settle, 141 crossed ≥ 2 lanes, deepest 24; medium 150 rounds, 14 distinct depths at settle, 117 crossed ≥ 2 lanes, deepest 17; hard 150 rounds, 12 distinct depths at settle, 87 crossed ≥ 2 lanes, deepest 13; daredevil 150 rounds, 7 distinct depths at settle, 52 crossed ≥ 2 lanes, deepest 7; castle reached 1×"
+    },
+    {
+      "id": "ROAD-16",
+      "status": "PASS",
+      "origin": null,
+      "detail": "every scored round of the 13 Oct phases (A, C, C $10, D, E) is in the platform's bet history (game housegames-hubiesroad) with the same stake, payout and won/lost status: 7600/7600 (E04, 7600 rows); the 24 h round's bet-history row is scored in ROAD-31 (E07); E05 checked by its numbers: 60 dataset rows sum to the TOTAL row (86966 rounds, staked and paid exact to 1e-8, each row's net == paid − staked), the ledger line adds up (86979 entries = 86966 captured + 0 open + 13 from 10 Oct, captured == TOTAL, unexplained 0), and balance after 914.19723945 − net -72.64994055 + open stakes 0 == 986.84718000 == the --before input: true; each of the package's 6 files' row (rounds, staked, paid) == the package's own count and sums from the file: 6/6 (12 Oct: 67 distinct rounds from 67 records); E05's road rows: 6, 7667 rounds == the 7667 rounds of this package's files: true; the per-round balance field is not used: the games were captured concurrently, so consecutive road answers interleave other games' settlements"
+    },
+    {
+      "id": "ROAD-17",
+      "status": "PASS",
+      "origin": null,
+      "detail": "Phase E 600/600 lane-by-lane rounds replay clean: open-lane values 2044/2044, safe steps 2045/2045, deadly steps 386/386, cash-outs 213/213, trap set invariant 600/600, offers on the bet answer 600/600, offers on later answers 2044/2044; 12 Oct lane-by-lane play: open-lane values 150/150, safe steps 150/150, deadly steps 32/32, cash-outs 17/17, trap set invariant 66/66, offers on the bet answer 50/50, offers on later answers 150/150; every intermediate value == the formula at that lane, and every offer shown before a lane (next.multiplier, next.value; cash-out offered iff a lane is crossed) == the formula at the next lane: 2844/2844 answers; auto bets naming 2 to 24 lanes as the SERVER settled them (12 Oct): 10/10 replay from the derived field (the scored 13 Oct auto bets name one lane each); auto == lane by lane 650/650 is COMPUTED by the package (the lane-by-lane walk replayed as if named up front), not a server answer; the field is derived before any lane is walked (the derivation takes no lane input)"
+    },
+    {
+      "id": "ROAD-18",
+      "status": "PASS",
+      "origin": null,
+      "detail": "P(k lanes safe) = C(25−m,k)/C(25,k) equals the product Π(25−m−i)/(25−i) in exact integers for 81/81 cells; negative control: round 0 with one served trap moved to a safe slot is rejected by the replay: true; no operator win-chance field exists or is read; Phase A wins 5248 vs 5265.0 expected from the combinatorics (ROAD-22 tests it)"
+    },
+    {
+      "id": "ROAD-19",
+      "status": "PASS",
+      "origin": null,
+      "detail": "81 cells (every difficulty and number of lanes crossed): derived RTP 99/100 … 99/100 (the same in every cell: true) — vs the flat claim 0.99 read from the exhibits at run time: E01 \"return\" (GET /housegames/road/fairness) \"99% for every difficulty and every stopping rule\" (0.99); E02 rulesRoadReturn (game page rules panel) \"Every way of playing returns {pct}% (1% house edge)\" (0.99); E08 rulesRoadReturn (game page rules panel, live copy of 19 Oct) \"Theoretical RTP before rounding and any payout cap\" (0.99); held to the highest, the places agree; E02 (and E08) rulesRoadReturn's own \"{pct}%\" is filled by the page at run time, not captured rendered — DL-11; 0 house-side beyond the 0.1 pp band → RTP-CLAIM PASS (rule RTP-CLAIM 1.2.0, enforced true: PASS); the per-cell table is outputs/rtp-claim-table.json; the payout's truncation to 1e-8 at the 0.02 stake costs at most 4.20e-7 of RTP (cell easy/2, disclosed); committed table matches: true"
+    },
+    {
+      "id": "ROAD-20",
+      "status": "PASS",
+      "origin": null,
+      "detail": "census re-run in full == the pinned outputs/simulation-results.json byte for byte: true; 4 difficulties × 1,000,000 rounds = 4,000,000 rounds on auditor-chosen seeds independent of the operator (fixed labels, src/sim-config.ts, so the census reproduces byte for byte), each difficulty on its own seeds and drawn to its m picks (floor 1,000,000 per difficulty: true); pick uniformity: 20 chi² tests (each step's position among the slots left, and its slot over all 25, on the rounds of every difficulty that draws that step: 4,000,000, 3,000,000, 3,000,000, 2,000,000, 2,000,000, 1,000,000, 1,000,000, 1,000,000, 1,000,000, 1,000,000), smallest p 9.169e-2 ≥ α/4/20 = 1.250e-4: true; serial on pick 0 of the 4,000,000 rounds: lag-1 r 9.97e-5 z 0.199 p 0.8420, runs z 0.381 p 0.7033 (each ≥ α/4: true); RTP convergence at every stopping depth: 81/81 cells within 5·SE + 0.0001 of the cell's exact derived RTP (0.99 … 0.99; never the published figure), worst |Δ|/SE 2.99 (cell medium/9); 4 cells have under 30 expected survivors and carry little evidence (DL-5); band: |RTP_sim − RTP_exact(cell)| ≤ 5·SE + 0.0001, SE = σ/√n per cell, half-width 1.110e-3 (cell easy/1) … 8.950e+0 (cell daredevil/15); 44 of 81 cells have a half-width wider than the cell's house edge 1 − RTP_exact(cell), so in those cells the band cannot detect an edge of that size; false-alarm: uniformity ≤ α/4 = 0.0025 (Bonferroni), lag-1 and runs ≤ α/4 each, RTP cells 3.9e-4 (exact binomial, summed) ≤ α/4: true"
+    },
+    {
+      "id": "ROAD-21",
+      "status": "PASS",
+      "origin": null,
+      "detail": "160 revealed seeds × 10,000 nonces: every revealed seed of every dataset (A 130, C 3, C $10 3, D 4, E 12, 12 Oct 8; 160 of the 160 revealed seeds carry captured rounds); early window = the nonces the capture played on the seed (1..50 on a 13 Oct pair, 1..n with n ≤ 10 on a 12 Oct pair), reference = the rest of 1..10,000; each nonce replays a round the capture played on that seed (its difficulty, walked to the same lane); scored statistic (per-slot standardised return, src/sim-config.ts; switched from the pooled return on 14 Oct, after the pooled result below was known — both printed): each played slot's return minus its exact mean ÷ its exact sd, summed and ÷ √slots, over the 7667 early-window slots: z -0.658, one-sided p 0.2553 (≥ 0.008: true); reference window z -0.323; per dataset, printed, not scored: A z -0.658 (6500 slots), C z 0.833 (150 slots), C $10 z 0.000 (150 slots), D z -1.008 (200 slots), E z 0.061 (600 slots), 12 Oct z -0.241 (67 slots); per difficulty over every seed, printed, NOT scored (4 subsets, no multiplicity correction): easy 2137 slots z -0.751 one-sided p 0.2264 (80 % power at 1.49 pp); medium 1851 slots z 0.497 one-sided p 0.6903 (80 % power at 2.94 pp); hard 1846 slots z 1.008 one-sided p 0.8432 (80 % power at 3.99 pp); daredevil 1833 slots z -2.045 one-sided p 0.0204 (80 % power at 6.59 pp); per-cell census counts sum to the window totals: true; every seed's captured rounds are nonces 1..n with no gap: 160/160; early window == the served outcomes, cell by cell: 160/160 seeds; the pooled return of the Phase A epochs (scored until 14 Oct, printed): early z -0.865, p 0.1936, reference z 0.455; 69 Phase A epochs below expectation, 61 at or above; Phase A early window == the captured rounds (wins 5248/5248, return exact: true); detection power of the scored statistic at 80 %: a 1.39 pp per-round RTP deficit spread over all 7667 slots (the Phase A pooled return's 2.09 pp); false-alarm rate of the scored rule 0.00812 ± 0.000201 at level 0.008 over the 7667 played slots (== this run's 7667: true), of the Phase A pooled rule 0.00793 ± 0.000198 at 0.008 and 0.00998 ± 0.000222 at 0.01 (src/false-alarm-pass2.ts, npm run false-alarm:pass2; cap 0.01)"
+    },
+    {
+      "id": "ROAD-22",
+      "status": "INFO",
+      "origin": null,
+      "detail": "Phase A first trap slot (field[0]) over all 25 slots: chi² 16.0 (df 24) p 0.888; lane-1 trap rate per difficulty: easy 79/1625 (expected 65.0, z 1.77); medium 182/1625 (expected 195.0, z -0.99); hard 301/1625 (expected 325.0, z -1.49); daredevil 690/1625 (expected 650.0, z 2.03) — informational (6500 rounds have little power and never bear the verdict)"
+    },
+    {
+      "id": "ROAD-23",
+      "status": "PASS",
+      "origin": null,
+      "detail": "MANIFEST.md S5-MATRIX block: 8 rows; ids and names == the framework's eight, in order (S5-1 Replay protection, S5-2 Input validation, S5-3 Seed integrity under adversarial input, S5-4 Cross-player isolation, S5-5 Payout field integrity, S5-6 Nonce sequence enforcement, S5-7 Parameter boundary enforcement, S5-8 Game-specific state): true; each result Pass / Flag / Hard Fail / Not tested: true (5 Pass on every control the row names, 3 Pass on part of the controls it names, 0 Not tested); each tied to a check, capture or limitation: true; the vendored profile states the ids only (the shared PLINKO-23 text names the rows)"
+    },
+    {
+      "id": "ROAD-24",
+      "status": "PASS",
+      "origin": null,
+      "detail": "site-verifier/derive.js (generated from src/rng.ts by scripts/build-site-verifier.mjs): sha256 6ac09752e8745ea18a9b34b9bbfb26d93f185d55e42788b7f3ae213bcde25e84; == SITE_VERIFIER_PIN in src/artifact-pins.ts: true; == its RELEASE-MANIFEST.json pin: true; quoted in MANIFEST.md and README.md: true; the module loaded from that file exports what src/rng.ts exports (SLOTS, drawStream, firstDeadlyLane, hmacBlock, picks, positionFromU, sha256Hex): true; run side by side with src/rng.ts on every round ROAD-07 replays, from the 6 shipped datasets (7600 rounds of the 13 Oct phases and the 66 records of the 12 Oct file recorded whole; its 1 record not replayed there is not replayed here): 7666 rounds, 38491 calls (SLOTS 1, sha256Hex 160, hmacBlock 7666, drawStream 7666, positionFromU 7666, picks 7666, firstDeadlyLane 7666; 7/7 exports exercised), 0 differing results"
+    },
+    {
+      "id": "ROAD-25",
+      "status": "PASS",
+      "origin": null,
+      "detail": "README.md \"Verify a bet\" carries the save-the-hash-first step, where the seed is revealed, the fields, the commitment encoding, the HMAC key encoding (the seed's text, not hex-decoded), the trap picks with their block index, the lane numbering, the multiplier and a script that recomputes a round: 11/11 markers"
+    },
+    {
+      "id": "ROAD-26",
+      "status": "PASS",
+      "origin": null,
+      "detail": "6 datasets + 8 evidence exhibits match their sha256 pinned in src/loader.ts; the figures checks compare against, read from the exhibits: MIN_STAKE 0.01000311 == E03 wallet.minBet, MAX_WIN 1000310.0961298 == E03 wallet.maxWin, multiplier coefficient 99/100 == E01 \"multiplier\" (99/100) and E02 rulesRoadReturn (0.99), SLOTS, DIFFICULTIES, SPEC_EXAMPLES and the 81-cell SPEC_PAYOUTS table == E01, the published return parses from E01 \"return\" (GET /housegames/road/fairness) (0.99) and E02 rulesRoadReturn (game page rules panel) (0.99) and E08 rulesRoadReturn (game page rules panel, live copy of 19 Oct) (0.99): true"
+    },
+    {
+      "id": "ROAD-30",
+      "status": "PASS",
+      "origin": null,
+      "detail": "MANIFEST.md: 12 declared-limitation rows; load-bearing premises with \"Could the data contradict it?\": true; every exhibit E01…E08 listed by file name: true"
+    },
+    {
+      "id": "ROAD-31",
+      "status": "PASS",
+      "origin": null,
+      "detail": "the round left open on purpose on 12 Oct (easy, 1 lane crossed, value 0.020625) is revealed and recomputes (field [23], trap lane 24: every replay row clean true); the server finished it on the witnessed branch \"with lanes crossed: cashed out at its value\": payout 0.020625 == its value; bet history row won, payout equal: true (E07); time from the last decision (2026-10-12T13:45:00.856Z) to the server's settlement (2026-10-13T14:54:22.655582Z): 25 h 9 m 22 s; capture checks: 24.02 h active, 24.59 h active, 25.038 h active, 25.22 h closed — the branch \"with none, one lane is walked and, if it is safe, the round is cashed out\" was not exercised by the capture: declared unwitnessed (DL-7), as the rule allows: PASS with the branch declared; the close came 1 h 9 m after the 24 hours, reported as observed (the profile sets no bound on it)"
+    }
+  ],
+  "observations": [
+    "24 h rule timing: the published rule says a round left without a decision for 24 hours is finished by the server; the one abandoned road round was finished 25 h 9 m 22 s after its last decision (still active at the capture's checks 24.02 h active, 24.59 h active, 25.038 h active, 25.22 h closed). ROAD-31 scores the witnessed settlement (the unwitnessed branch declared) and not the timing; whether a close 1 h 9 m after the 24 hours is a pass or a flag is not decided by the ROAD profile",
+    "cash-out with no lane crossed (E01 rules \"after at least one safe lane the round can be cashed out\"), sent on purpose in the 12 Oct capture: refused 2/2 (HTTP 400, code 6 \"cross a lane before cashing out\"); the rest of each of those rounds is recomputed in ROAD-07/10/11",
+    "the 12 Oct round db0286ad… finished on resume (DL-9): 683 requests carried the bet's own generation id (the bet and 682 step actions); 681/682 of those actions were answered with the bet answer itself (nothing walked, no second round), 1 recorded no answer; on resume 2 requests under new generation ids walked one lane and cashed out, and the round is counted in ROAD-16"
+  ]
+}

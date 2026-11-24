@@ -1,0 +1,8 @@
+node_modules/
+outputs/run/
+outputs/*
+!outputs/simulation-results.json
+!outputs/rtp-claim-table.json
+!outputs/verification-results.json
+!outputs/mutation-results.json
+!outputs/fresh-copy.json

@@ -1,0 +1,123 @@
+{
+  "exhibit": "E07",
+  "what": "The road round left open on purpose on 12 Oct 2026 (one lane crossed), the checks that found it still active, and the server's own record of finishing it",
+  "source": {
+    "file": "data/supplementary/housebets-road-full-67rounds-withopen.json",
+    "sha256": "02ba95c67529eab6e7f10822d7260f4670d6060c15d7b4f4edb854c99d7e583a",
+    "fields": [
+      "meta.leftOpen",
+      "meta.openChecks",
+      "rounds[closedByServer]"
+    ]
+  },
+  "leftOpenAt": "2026-10-12T13:45:01.095Z",
+  "openChecks": [
+    {
+      "at": "2026-10-13T13:46:12.238Z",
+      "hoursSinceLeft": 24.02,
+      "stillActive": true
+    },
+    {
+      "at": "2026-10-13T14:20:25.946Z",
+      "hoursSinceLeft": 24.59,
+      "stillActive": true
+    },
+    {
+      "at": "2026-10-13T14:47:18.624Z",
+      "hoursSinceLeft": 25.038,
+      "stillActive": true
+    },
+    {
+      "at": "2026-10-13T14:58:12.925Z",
+      "hoursSinceLeft": 25.22,
+      "stillActive": false
+    }
+  ],
+  "roundAsLeft": [
+    {
+      "at": "2026-10-12T13:45:00.568Z",
+      "path": "/road/bet",
+      "body": {
+        "amount": 0.02,
+        "difficulty": "easy",
+        "currency": 1
+      },
+      "game": {
+        "roundId": "2e03a19d-e45b-4b08-8bba-7dae570258ff",
+        "active": true,
+        "difficulty": "easy",
+        "traps": 1,
+        "lanes": 24,
+        "stake": 0.02,
+        "position": 0,
+        "multiplier": 0,
+        "value": 0,
+        "outcome": null,
+        "payout": 0,
+        "createdAt": "2026-10-12T13:45:00.75363649Z"
+      }
+    },
+    {
+      "at": "2026-10-12T13:45:00.856Z",
+      "path": "/road/action",
+      "body": {
+        "roundId": "2e03a19d-e45b-4b08-8bba-7dae570258ff",
+        "seq": 0,
+        "action": "step"
+      },
+      "game": {
+        "roundId": "2e03a19d-e45b-4b08-8bba-7dae570258ff",
+        "active": true,
+        "difficulty": "easy",
+        "traps": 1,
+        "lanes": 24,
+        "stake": 0.02,
+        "position": 1,
+        "multiplier": 1.03125,
+        "value": 0.020625,
+        "outcome": null,
+        "payout": 0,
+        "createdAt": "2026-10-12T13:45:00.753636Z"
+      }
+    }
+  ],
+  "serverRecord": {
+    "roundId": "2e03a19d-e45b-4b08-8bba-7dae570258ff",
+    "active": false,
+    "difficulty": "easy",
+    "traps": 1,
+    "lanes": 24,
+    "stake": 0.02,
+    "position": 1,
+    "field": [
+      23
+    ],
+    "trapLane": 24,
+    "multiplier": 1.03125,
+    "value": 0.020625,
+    "outcome": "cashout",
+    "payout": 0.020625,
+    "fairness": {
+      "version": "canonical",
+      "hashedServerSeed": "5cec49b616d6204a394fa7a1f5a54febfe417a51c6cbaa169978d30ad43fdcc2",
+      "clientSeed": "pfroad2863d7e544a9ffef77ebf40354fcbb8c",
+      "nonce": 1
+    },
+    "createdAt": "2026-10-12T13:45:00.753636Z",
+    "settledAt": "2026-10-13T14:54:22.655582Z"
+  },
+  "betHistoryRow": {
+    "id": "2e03a19d-e45b-4b08-8bba-7dae570258ff",
+    "game": "housegames-hubiesroad",
+    "placed_at": "2026-10-12T13:45:00.736477Z",
+    "stake": "0.02000000",
+    "payout": "0.02062500",
+    "currency": "usdt",
+    "status": "won"
+  },
+  "betHistorySource": {
+    "file": "capture-full-2026-10-12/ledger/ledger-2026-10-13-final.json (HouseBets workshop)",
+    "sha256": "0be7ab44b9f3aedf5ed7d6db078f96b596a29e3621c7003b459614875c065864",
+    "readAt": "2026-10-13T20:06:53.464Z"
+  }
+}

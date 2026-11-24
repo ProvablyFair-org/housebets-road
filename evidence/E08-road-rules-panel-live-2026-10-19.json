@@ -1,0 +1,66 @@
+{
+  "exhibit": "E08",
+  "what": "HouseBets road game page: the rules panel text (English) as shipped in the bundle the live page URL served on 19 Oct 2026 (last-modified Fri, 16 Oct 2026 09:18:09 GMT, the same last-modified as the other ten House Games bundles fetched that day). E02 is the same panel in the 10 Oct copy, the bundle in force while this package's rounds were captured (12-13 Oct).",
+  "source": {
+    "file": "bundles/live-2026-10-19/platform-housegames-road-game.js (HouseBets workshop)",
+    "url": "/static/platform-housegames-road-game.js",
+    "sha256": "3816813d1b5fb47e7ac96f0f248567ce002d23609ead2b0d44b52e60207c1d2f",
+    "bytes": 1381472,
+    "lastModified": "Fri, 16 Oct 2026 09:18:09 GMT",
+    "etag": "W/\"151460-1a144012868\"",
+    "fetchedAt": "Mon, 19 Oct 2026 13:01:27 GMT",
+    "contentType": "application/javascript; charset=UTF-8",
+    "loadedByLivePage": "not re-checked on 19 Oct; the same /static URL the live page loaded on 10 Oct (bundles/LIVE-BUNDLES.md)"
+  },
+  "previous": {
+    "exhibit": "E02",
+    "file": "evidence/E02-road-rules-panel-2026-10-10.json",
+    "bundleSha256": "d9ba3797255b6729a617f4ae901995174d2bd9e48af2b79b2bf2b6730c9ef06b",
+    "bytes": 1356196
+  },
+  "rulesPanelEnglish": {
+    "rulesBetRange": "Bet amount: {min} to {max}.",
+    "rulesLimitsH": "Limits",
+    "rulesRoadHowH": "How to play",
+    "rulesRoadIntro": "Hubie surfs from the beach to the island, buoy by buoy. A shark waits under some of the lanes. Every lane he crosses raises the multiplier; a shark ends the round and the bet is lost.",
+    "rulesRoadHow": "Choose a difficulty and a bet, press Bet, then ride one lane at a time. Cash out after any lane you crossed to take the bet times the multiplier shown. Cross every lane and Hubie reaches the island party: the round cashes out by itself at the top multiplier.",
+    "rulesRoadAuto": "Auto rides the same number of lanes every round and cashes out there — set Lanes, or tap the buoy he should stop at.",
+    "rulesRoadDiffH": "Difficulties",
+    "rulesRoadSharks": "Sharks",
+    "rulesRoadAllLanes": "All lanes",
+    "rulesRoadReturnH": "Return",
+    "rulesRoadReturn": "Theoretical RTP before rounding and any payout cap: {pct}% (1% house edge). A capped payout can reduce the return. After k lanes with m sharks the multiplier is 0.99 × C(25, k) / C(25 − m, k), the fair price of surviving k lanes, less 1%. Payouts are rounded down to the wallet’s smallest unit.",
+    "rulesRoadMaxWin": "A lane that would take the win past the maximum win is not offered: cash out instead. A round whose first lane would already pass it does not start.",
+    "rulesRoadReload": "A round in play stays open on the server: reload the game and it carries on where it stood.",
+    "rulesRoadIdle": "A round left without a decision for 24 hours is finished by the server: with lanes crossed it is cashed out at its value; with none, the first lane is ridden and, if safe, cashed out.",
+    "rulesRoadMaxWinCap": "A round wins at most {cap} above its stake.",
+    "rulesRoadFreeRound": "A bet of 0 plays a free round — nothing is staked, nothing is paid; the sharks are still placed.",
+    "rulesRoadFair": "The sharks are placed before you bet, from HMAC-SHA256(server seed, client seed:nonce) — the public Mines calculators’ draw for 25 tiles, lane = tile + 1. The server seed’s hash is shown up front and the seed is revealed when you rotate the pair: check any round in the fairness window.",
+    "rulesMaxBet": "Max bet",
+    "rulesMinBet": "Min bet"
+  },
+  "changedSinceE02": {
+    "rulesRoadReturn": {
+      "E02 (10 Oct)": "Every way of playing returns {pct}% (1% house edge). After k lanes with m sharks the multiplier is 0.99 × C(25, k) / C(25 − m, k), the fair price of surviving k lanes, less 1%. Payouts are rounded down to the wallet’s smallest unit.",
+      "E08 (19 Oct)": "Theoretical RTP before rounding and any payout cap: {pct}% (1% house edge). A capped payout can reduce the return. After k lanes with m sharks the multiplier is 0.99 × C(25, k) / C(25 − m, k), the fair price of surviving k lanes, less 1%. Payouts are rounded down to the wallet’s smallest unit."
+    },
+    "rulesMaxBet": {
+      "E02 (10 Oct)": null,
+      "E08 (19 Oct)": "Max bet"
+    },
+    "rulesMinBet": {
+      "E02 (10 Oct)": null,
+      "E08 (19 Oct)": "Min bet"
+    }
+  },
+  "panelKeysCalled": {
+    "note": "rules keys the page code passes to its translator, (\"rulesX\" ...), in the 10 Oct copy vs the live copy",
+    "added": [
+      "rulesMaxBet",
+      "rulesMinBet"
+    ],
+    "removed": [
+      "rulesBetRange"
+    ]
+  }
+}

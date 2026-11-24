@@ -1,0 +1,22 @@
+{
+  "name": "housebets-road-audit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Provably fair audit — HouseBets House Games Hubie's Road (new engine, Oct 2026)",
+  "type": "module",
+  "engines": { "node": ">=22.6.0 <23" },
+  "scripts": {
+    "test": "node --experimental-strip-types --no-warnings --import ./scripts/ts-resolve.mjs --test tests/rng.test.ts && npm run verify",
+    "verify": "node --experimental-strip-types --no-warnings --import ./scripts/ts-resolve.mjs tests/verify.ts",
+    "simulate": "PF_EMIT=1 node --experimental-strip-types --no-warnings --import ./scripts/ts-resolve.mjs src/simulate.ts",
+    "simulate:run": "node --experimental-strip-types --no-warnings --import ./scripts/ts-resolve.mjs src/simulate.ts",
+    "rtp-claim:write": "node --experimental-strip-types --no-warnings --import ./scripts/ts-resolve.mjs src/rtp-settings.ts",
+    "false-alarm:pass2": "node --experimental-strip-types --no-warnings --import ./scripts/ts-resolve.mjs src/false-alarm-pass2.ts",
+    "record": "cp outputs/run/verification-results.json outputs/verification-results.json && shasum -a 256 outputs/verification-results.json",
+    "mutate": "node scripts/mutate.mjs",
+    "gate:fresh": "node --test tests/fresh-copy-gate.test.mjs && node scripts/fresh-copy-check.mjs",
+    "build:standalone": "node scripts/build-standalone.mjs",
+    "build:site-verifier": "node scripts/build-site-verifier.mjs --pin",
+    "release-manifest": "node scripts/release-manifest.mjs"
+  }
+}

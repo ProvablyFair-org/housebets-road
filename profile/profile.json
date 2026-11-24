@@ -1,0 +1,537 @@
+{
+  "framework": "1.1",
+  "game": "road",
+  "profileVersion": "1.0.2-public",
+  "rules": {
+    "adoption": "Adopted 14 Oct 2026 by the profile owner under Methodology v1.1. Drafted 2026-10-13 as a restatement of the mines profile for HouseBets' road from its published spec and the captured data.",
+    "reproduction": "Byte identity is required only for exact content. A pinned artifact's hash asserts the identity of the committed evidence — the dataset, the config, the seeds and the census (integer counts, round totals, integer-unit money) — and verify never rewrites it. A regeneration is written to outputs/run/ and compared with the committed artifact field by field: integers and strings exact; non-integer numbers within |Δ| ≤ 1e-14 + 1e-12·max(|a|,|b|), or the per-field tolerance a step declares; the diff records the runtime version and must be empty beyond tolerance. Run metadata is absent, not excluded. No verdict-bearing comparison turns on a difference below its declared tolerance. Shared with the Plinko profile (rules.reproduction).",
+    "applicability": "A check applies unless its `applies` predicate over the declaration is false. The engine evaluates the predicate; a false result prints the step as n/a with the derived reason (path, declared value) and the declared value is verified against the dataset or pinned config by the rule in `declarationTruth` (conformance C-13). A declaration never asserts n/a directly; `notApplicable` lists are ignored from 1.0.2."
+  },
+  "numbering": "Shared with the Mines profile: ROAD-nn is the same property as MINES-nn for the core checks (01-05, 09, 11, 16, 23, 26-30, copied verbatim); slots 06-08, 10, 12-15, 17-22, 24-25 are restated for road; ROAD-31 are game-specific additions. Template-only extras not carried: none.",
+  "layers": {
+    "S1": "Seed, Nonce & Determinism",
+    "S2": "RNG & Entropy Model",
+    "S3": "Verifier Parity",
+    "S4": "RTP & Payout Logic",
+    "S5": "Fairness Integrity Testing",
+    "S6": "Player Verification",
+    "S7": "Reproducibility"
+  },
+  "policies": {
+    "HARD_FAIL": "any violation → NOT PROVABLY FAIR; verify exits 1",
+    "FLAG": "violation is disclosed with a limitation row; verify exits 2. A FLAG carries an origin: operator (Conditional Pass) or capture (limitation row, verdict class unchanged). Decided 2026-09-17.",
+    "INFORMATIONAL": "reported with its statistic and its reading, never affects the verdict and is never counted as a flag, whatever the statistic says; verify's exit code does not depend on it. The live-sample fit (check 22) is informational everywhere.",
+    "RELEASE_GATE": "package check that blocks publication when it fails; it never changes the verdict",
+    "GRADED": "not verdict-bearing; scored 1–5 in the QA scorecard and gated at release by the conformance floor"
+  },
+  "statusLegend": {
+    "implemented": "the check exists as specified and uses the declared parameters",
+    "partial": "the check exists but is weaker than the profile (what is missing is stated)",
+    "missing": "no step or package item covers it",
+    "n/a-declared": "the casino's design makes it inapplicable; the declaration says why and the step prints it"
+  },
+  "checks": [
+    {
+      "id": "ROAD-01",
+      "layer": "S1",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Seed hash integrity",
+      "asserts": "Every revealed server seed hashes to its published commitment under the declared encoding; the number of seeds checked equals the code constant for the audited population, not a count read from the dataset.",
+      "params": [
+        "commitment.encoding",
+        "commitment.hashField",
+        "commitment.revealField",
+        "identity.dataset.expectedSeeds"
+      ],
+      "floor": "All epochs — zero unverifiable bets",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-02",
+      "layer": "S1",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Forward commitment chain",
+      "asserts": "For every rotation, the next-seed hash published before the rotation equals the active hash after it, and a pre-capture link anchors the chain before epoch 0. Recomputed from raw fields, never from a capture-script boolean.",
+      "params": [
+        "commitment.forwardCommitment.nextHashField",
+        "commitment.forwardCommitment.preCaptureLink"
+      ],
+      "floor": "All rotation events — zero unverified transitions",
+      "sharedWithPlinko": true,
+      "applies": {
+        "path": "commitment.forwardCommitment.nextHashField",
+        "notNull": true
+      },
+      "declarationTruth": "no key matching /next.*hash/i on any epoch record when declared null"
+    },
+    {
+      "id": "ROAD-03",
+      "layer": "S1",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Hash consistency within epoch",
+      "asserts": "All bets sharing an epoch carry the same server-seed hash and the same client seed.",
+      "params": [
+        "commitment.hashField",
+        "nonce.epochSize"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-04",
+      "layer": "S1",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Nonce continuity",
+      "asserts": "Within every epoch the nonces are exactly base … base+epochSize−1 with no gap, repeat or reorder; the base is a declared constant, not the minimum observed. An operator-side gap or repeat is a HARD FAIL; an auditor-side capture retry is a FLAG with origin = capture (limitation row, verdict class unchanged — decided 2026-09-17).",
+      "params": [
+        "nonce.base",
+        "nonce.epochSize"
+      ],
+      "floor": "Nonce gap or repeat within an epoch → hard fail (methodology S1)",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-05",
+      "layer": "S1",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Population & epoch size (G-BIND)",
+      "asserts": "Bets, seeds, epochs and per-phase counts equal constants in src/, every epoch has exactly epochSize bets, and the dataset's own totals are not the denominator; a secondary dataset file (e.g. a Phase E file) is pinned and counted the same way.",
+      "params": [
+        "identity.dataset.expectedBets",
+        "identity.dataset.expectedSeeds",
+        "nonce.epochSize",
+        "capture.phases"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-06",
+      "layer": "S1",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Client-seed influence & Phase D recomputation",
+      "asserts": "A wrong client seed changes the trap field at the rate the model predicts (0 % change → hard fail), an empty-seed control is run and its server answer recorded, every Phase D round with a player-set seed recomputes, predictable Phase D seeds are disclosed with the exposed epochs enumerated, and the A–C generator is disclosed and is a CSPRNG.",
+      "params": [
+        "capture.clientSeed",
+        "capture.phases.D"
+      ],
+      "floor": "Client seed not used in computation → hard fail (methodology S2); Phase D ≥ 2 distinct client seeds",
+      "sharedWithPlinko": true,
+      "applies": {
+        "path": "capture.phases.D.bets",
+        "gt": 0
+      },
+      "declarationTruth": "no record labelled phase D when declared 0"
+    },
+    {
+      "id": "ROAD-07",
+      "layer": "S2",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Trap-field recomputation",
+      "asserts": "Every round with a revealed seed recomputes to the recorded trap slots in draw order: trap i is the slot at position floor(u × (25 − i) / 2^32) among the slots not yet picked, kept in ascending order, u = bytes 4i..4i+3 of HMAC-SHA256(serverSeed, clientSeed:nonce:block) big-endian; a difficulty of m traps is the first m picks; coverage equals expectedBets; a skipped round is a FAIL. Spec: the operator's published fairness endpoint (/road/fairness, 12 Oct).",
+      "params": [
+        "rng.*",
+        "gameModel.placement",
+        "gameModel.difficulties",
+        "identity.dataset.expectedBets"
+      ],
+      "floor": "Every bet individually recomputed; a single mismatch is a hard fail",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-08",
+      "layer": "S2",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Draw bias bound",
+      "asserts": "Each pick floor(u × n / 2^32) is enumerated for every range n = 25 … 25 − m + 1 used by the four difficulties: every position receives ⌊2^32/n⌋ or ⌈2^32/n⌉ draws, and the per-position probability deviation is printed as a computed bound (≤ 2^-32).",
+      "params": [
+        "rng.draw",
+        "gameModel.placement"
+      ],
+      "floor": "Modulo bias exceeding 1/2^32 without rejection sampling → hard fail (methodology S2)",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-09",
+      "layer": "S2",
+      "kind": "package-check",
+      "policy": "GRADED",
+      "name": "RNG reference vectors",
+      "asserts": "Unit tests reproduce captured bets from their revealed seeds and fixed vectors against the operator's published algorithm or source; the adapter cites the operator source line it ports.",
+      "params": [
+        "rng.referenceCite"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-10",
+      "layer": "S2",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Lane outcome & step-sequence consistency",
+      "asserts": "For every round: lane L (1-based) is deadly iff slot L − 1 is a trap; slots at or past the difficulty's lanes count (24 / 22 / 20 / 15) are never walked; a round that meets a trap ends on exactly the first deadly lane walked, a round that walks k lanes with none deadly can cash out, and crossing the last lane cashes out by itself; the walked count equals the recorded position; asserted from the recomputed field, never from the operator's outcome label. Spec: the operator's published fairness endpoint (/road/fairness, 12 Oct).",
+      "params": [
+        "gameModel.difficulties",
+        "gameModel.laneMap"
+      ],
+      "floor": null,
+      "sharedWithPlinko": false,
+      "applies": null
+    },
+    {
+      "id": "ROAD-11",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Payout arithmetic",
+      "asserts": "payout = amount × multiplier for every win and 0 for every loss, compared exactly on the declared money grid or settlement rule when one exists, otherwise within an absolute tolerance no looser than 1e-8; when the capture carries no payout field, the wallet delta is the payout and its resolution is declared.",
+      "params": [
+        "money.*"
+      ],
+      "floor": "Payout arithmetic error exceeding 1e-8 → hard fail (methodology S3)",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-12",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Bet-size invariance (Phase C)",
+      "asserts": "Every elevated-stake round recomputes identically and pays by the same formula as its base-stake config; Phase C walks one lane on easy (1 trap, win chance 24/25) so ≥ 100 elevated-stake wins exercise the payout path. HouseBets plan: 150 rounds at 100 × the base stake (2.00) and 150 at $10.",
+      "params": [
+        "capture.phases.C"
+      ],
+      "floor": "Phase C ≥ 100 bets at elevated stake",
+      "sharedWithPlinko": true,
+      "applies": {
+        "path": "capture.phases.C.bets",
+        "gt": 0
+      },
+      "declarationTruth": "no record labelled phase C when declared 0"
+    },
+    {
+      "id": "ROAD-13",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Multiplier formula & provenance",
+      "asserts": "After k safe lanes with m traps the served multiplier equals 99/100 × C(25, k) / C(25 − m, k) (served as that fraction's float64; the payout floor(stake × multiplier) on the 1e-8 grid, rounded down once) for every cash-out at every depth; the formula's origin is the operator's fairness endpoint; no operator-supplied odds field is read by the derivation. Spec: the operator's published fairness endpoint (/road/fairness, 12 Oct).",
+      "params": [
+        "gameModel.multiplier",
+        "gameModel.edge"
+      ],
+      "floor": null,
+      "sharedWithPlinko": false,
+      "applies": null
+    },
+    {
+      "id": "ROAD-14",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "FLAG",
+      "name": "Multiplier monotonicity & bounds",
+      "asserts": "The multiplier is strictly increasing in lanes walked and in trap count across every (m, k) cell, and the published max-win rule (a step that would take the cash-out value past the max win is not taken) holds on every round; the cap branch is witnessed in data or declared unwitnessed; a violation is disclosed, not failed.",
+      "params": [
+        "gameModel.limits",
+        "gameModel.multiplier"
+      ],
+      "floor": null,
+      "sharedWithPlinko": false,
+      "applies": null
+    },
+    {
+      "id": "ROAD-15",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "FLAG",
+      "name": "Difficulty & depth coverage",
+      "asserts": "Phase A covers every difficulty with at least the floor; the multi-step phase covers several depths per difficulty with step-by-step play; coverage is asserted against the plan in code.",
+      "params": [
+        "gameModel.difficulties",
+        "capture.phases.A",
+        "capture.phases.E"
+      ],
+      "floor": "All published configurations; Phase A ≥ 50 rounds per difficulty",
+      "sharedWithPlinko": false,
+      "applies": null
+    },
+    {
+      "id": "ROAD-16",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "FLAG",
+      "name": "Wallet / balance reconciliation",
+      "asserts": "When the capture carries a balance field, every consecutive-bet delta equals payout − amount exactly (or within the declared truncation resolution) or belongs to a structurally recognised deferred-credit pair; otherwise the step prints n/a — declared.",
+      "params": [
+        "money.balanceField"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": {
+        "path": "money.balanceField",
+        "notNull": true
+      },
+      "declarationTruth": "no key matching /balance|wallet/i on any bet record when declared null"
+    },
+    {
+      "id": "ROAD-17",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Multi-step parity",
+      "asserts": "Step-by-step rounds are captured with the value after each lane; every intermediate value and the cash-out equal the formula at that depth; the trap set is invariant across steps (the settled field equals the derived field, no crossed lane is deadly, the hit lane is); a round that names its lanes up front (auto) and the same walk played lane by lane settle identically.",
+      "params": [
+        "gameModel.multiStep",
+        "capture.phases.E"
+      ],
+      "floor": null,
+      "sharedWithPlinko": false,
+      "applies": {
+        "path": "gameModel.multiStep.captured",
+        "eq": true
+      },
+      "declarationTruth": "no round with more than one step request in the dataset when declared false"
+    },
+    {
+      "id": "ROAD-18",
+      "layer": "S4",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Anti-circularity (win probability)",
+      "asserts": "The chance that k lanes are all safe with m traps comes from C(25 − m, k) / C(25, k) (or the equivalent product) and a negative control shows a corrupted field is rejected; no operator-supplied win-chance field is read.",
+      "params": [],
+      "floor": "Config probabilities diverge from independent computation → hard fail (methodology S4)",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-19",
+      "layer": "S4",
+      "kind": "verifier-step",
+      "policy": "FLAG",
+      "name": "Effective RTP per cell vs claim",
+      "asserts": "RTP is derived per (difficulty, k) cell from the survival probability and the multiplier formula in exact arithmetic and compared with the published claim (\"99% for every difficulty and every stopping rule\"); a cell whose derived RTP differs from the claim is a FLAG with the magnitude; the per-cell table is published.",
+      "params": [
+        "gameModel.edge"
+      ],
+      "floor": null,
+      "sharedWithPlinko": false,
+      "applies": null,
+      "rtpClaimRule": {
+        "rule": "RTP-CLAIM 1.2.0",
+        "policy": "RTP FIGURE OVERSTATED",
+        "enforcedBy": "RTP_CLAIM_RULE_ENFORCED in each package's own src/rtp-claim-switch.ts, true since rule 1.2.0. The rule itself is core/rtp-claim.ts, which every package carries as a byte-identical copy (src/rtp-claim.ts); conformance C-13 compares SHA-256s and reports the package's switch value; bin/sync-rtp-claim.mjs re-vendors the rule and creates a missing switch file with false, never overwriting one.",
+        "whileNotEnforced": "the package computes the full per-setting exact RTP table, commits it (outputs/rtp-claim-table.json, SHA-256 pinned in src/rtp-settings.ts) and prints the rule's outcome as INFO; this check's own policy and every verdict are unchanged. A committed table that no longer equals the run or its pin exits 1 either way (it is evidence, not the claim).",
+        "whenEnforced": "1.2.0: an outcome of FAIL (a setting more than the band below the stated figure, house side) is the package verdict RTP FIGURE OVERSTATED, exit 5: a fail until the casino fixes the figure or the paytable, never printed as NOT PROVABLY FAIR and never a Pass, because the draws themselves pass. Verdict and exit come from rtpClaimVerdict (draw fail 1 > INCOMPLETE 3 > RTP FIGURE OVERSTATED 5 > Conditional 2 > Full 0). NO_CLAIM, NOTED and PUBLISHED are never a miss. A committed table that no longer equals the run or its pin is a reproduction failure, exit 1.",
+        "text": "The casino can publish either (1) a single number (\"99% rtp\") — every setting has to be within the band of it; or (2) a range (\"rtp 98.65–99.07% depending on settings\"), anywhere findable, fairness page or rules is fine — every setting has to sit inside it, and the range has to be the real one: bottom = their actual worst setting, top = their actual best (within the band); no \"up to 99%\", no range wider than reality. Our audit publishes the full per-setting table. 1.1.0: the claim is the figure shown to players, on the game page, fairness page or help page; a game with no shown figure is marked no claim (kind \"none\", its source naming the game page, the fairness page and the help page and saying \"no RTP figure\") and still gets its full per-setting table: outcome NO_CLAIM, never a FAIL, no house-side failures. 1.2.0: six places count (game page, fairness page, help page, bet panel, rules, game settings); an edge stated in the game settings counts as stated, no screenshot needed; claims may be per-setting or tiered (each stake tier held to the edge the casino states for it); a zero-edge or promotional line is noted, not tested; a casino that publishes the real per-setting figures is PUBLISHED, but a bare paytable is not.",
+        "band": "0.1 pp (RTP_CLAIM_BAND = 0.001 as a fraction of 1). A setting within 0.1 pp of what the casino states passes; past that on the house side is a FAIL; player-favourable never fails. For a range claim the published bottom may not sit more than 0.1 pp below the true worst setting, nor the published top more than 0.1 pp above the true best.",
+        "arithmetic": "exact rationals (bigint) for every setting, the claim and the band; an RTP a package can only derive numerically (a recursive EV engine, a double convolution) enters as the exact binary value of that double, and the package states the figure's precision.",
+        "industryContext": "GLI-11 v2.0 §4.4.1(b) requires the minimum RTP to be met \"at all times … at the lowest end of a non-linear paytable\", naming keno spot combinations; the lab reports the minimum and maximum theoretical payout."
+      }
+    },
+    {
+      "id": "ROAD-20",
+      "layer": "S4",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Simulation Pass 1 (fresh seeds)",
+      "asserts": "≥ 1,000,000 rounds per difficulty on pinned fresh seeds; slot-pick uniformity with the without-replacement correction (or first-draw + pairwise co-occurrence), serial independence, RTP convergence at every stopping depth; statistics re-derived in verify from the artifact's rows; the committed experiment is pinned and replayable — census byte-for-byte, derived statistics within the reproduction tolerance (rules.reproduction).",
+      "params": [
+        "simulation.pass1"
+      ],
+      "floor": "1,000,000 rounds per config",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-21",
+      "layer": "S4",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Simulation Pass 2 (cherry-pick)",
+      "asserts": "Every revealed seed × 10,000 nonces; early window = the captured nonce range; the statistic is the return of the difficulties and depths the casino actually served in that epoch against the exact per-config mean and variance, with an exact or bootstrap null; every window re-derived in verify; pre-registered rule; detection power printed.",
+      "params": [
+        "simulation.pass2",
+        "nonce.epochSize"
+      ],
+      "floor": "10,000 nonces per revealed seed",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-22",
+      "layer": "S4",
+      "kind": "verifier-step",
+      "policy": "INFORMATIONAL",
+      "name": "Live-sample fit",
+      "asserts": "Captured first-trap slots fit the uniform law and trap rates per difficulty fit the binomial; informational.",
+      "params": [
+        "identity.dataset.expectedBets"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-23",
+      "layer": "S5",
+      "kind": "package-check",
+      "policy": "GRADED",
+      "name": "S5 fairness-integrity matrix",
+      "asserts": "exploit-testing.md carries the standardized matrix with framework IDs S5-1 … S5-8, each row Pass / Flag / Hard Fail / Not tested — disclosed, tied to a step or a capture.",
+      "params": [],
+      "floor": "All tests in the standardized matrix",
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-24",
+      "layer": "S6",
+      "kind": "package-check",
+      "policy": "GRADED",
+      "name": "Player-verifier parity",
+      "asserts": "The site verifier's derive.js for this casino is generated from (or hash-matched to) the adapter's computeField; the package records that hash.",
+      "params": [
+        "rng.model"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": {
+        "path": "rng.operatorVerifier.published",
+        "eq": true
+      },
+      "declarationTruth": "cite resolves; when published is false the step prints n/a and the limitations register (ROAD-30) carries the row"
+    },
+    {
+      "id": "ROAD-25",
+      "layer": "S6",
+      "kind": "package-check",
+      "policy": "GRADED",
+      "name": "Player check path documented",
+      "asserts": "README states, in order, how a player verifies one of their own rounds: where the seed is revealed, which fields to paste, the commitment encoding, the trap picks, the lane numbering (lane L = slot L − 1) and the multiplier — using the declaration's field names.",
+      "params": [
+        "commitment.*",
+        "gameModel.placement",
+        "gameModel.laneMap"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-26",
+      "layer": "S7",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Dataset & config pins",
+      "asserts": "The live SHA-256 of every dataset file (master and secondary) equals the constant pinned in src/; the verifier aborts on mismatch before any step runs.",
+      "params": [
+        "identity.dataset.sha256",
+        "identity.dataset.secondaryFiles"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-27",
+      "layer": "S7",
+      "kind": "verifier-step",
+      "policy": "HARD_FAIL",
+      "name": "Artifacts of record",
+      "asserts": "Every artifact the report quotes is pinned in src/, un-ignored by name, carries no run metadata, is never rewritten by verify (verify writes only to outputs/run/), and every numeric leaf has a declared value domain; the pin asserts the identity of the committed evidence, and byte identity across machines is required only for exact content — dataset, config, seeds, census — while derived statistics are compared at the reproduction tolerance, never by bytes (rules.reproduction).",
+      "params": [
+        "package.pinnedArtifacts",
+        "package.gitignoreUnignoresByName",
+        "package.verifyRewritesCommittedResults",
+        "simulation.pass1.artifactCarriesRunMetadata"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-28",
+      "layer": "S7",
+      "kind": "package-check",
+      "policy": "RELEASE_GATE",
+      "name": "Fresh-clone reproduction",
+      "asserts": "On a fresh clone, npm ci && npm test prints N/N with the Full Pass verdict and exit 0 within the budget, without modifying any pinned artifact; a regeneration (test:full) is written to outputs/run/ and compared with the committed artifacts field by field — integers and strings exact, non-integer numbers within |Δ| ≤ 1e-14 + 1e-12·max(|a|,|b|) or the per-field tolerance a step declares — with the diff and the runtime version recorded in outputs/run/diff.json and nothing beyond tolerance; step counts in README/MANIFEST equal the suite; the audit ID is assigned; the runtime is pinned.",
+      "params": [
+        "package.testCommand",
+        "package.scoredSteps",
+        "identity.auditId",
+        "package.enginesPinned"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-29",
+      "layer": "S7",
+      "kind": "package-check",
+      "policy": "GRADED",
+      "name": "Mutation battery",
+      "asserts": "A step-named mutation registry runs in a disposable copy; every scored step has at least one mutation that kills it; declared survivors are tied to limitation IDs; forged-evidence batteries are included.",
+      "params": [
+        "package.mutationRegistry"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-30",
+      "layer": "S7",
+      "kind": "package-check",
+      "policy": "GRADED",
+      "name": "Disclosure register & evidence appendix",
+      "asserts": "MANIFEST carries the declared-limitations register with closure evidence, the load-bearing premises marked ASSUMED where unwitnessed, and evidence.md numbers every exhibit from E01 with its evidential role; no internal QA material ships in the package.",
+      "params": [
+        "package.limitationsRegister",
+        "package.evidenceImages",
+        "package.internalFoldersPresent"
+      ],
+      "floor": null,
+      "sharedWithPlinko": true,
+      "applies": null
+    },
+    {
+      "id": "ROAD-31",
+      "layer": "S3",
+      "kind": "verifier-step",
+      "policy": "FLAG",
+      "name": "Abandoned-round rule (24 h)",
+      "asserts": "The published rule \"a round left without a decision for 24 hours is finished by the server: with lanes crossed it is cashed out at its value; with none, one lane is walked and, if it is safe, the round is cashed out\" is tested on a deliberately abandoned round: the server-finished round is revealed and recomputed, its settlement equals the published branch, and the time from leaving it to the server's settlement is printed. A branch not exercised is declared unwitnessed.",
+      "params": [
+        "gameModel.abandonedRound"
+      ],
+      "floor": null,
+      "sharedWithPlinko": false,
+      "applies": {
+        "path": "gameModel.abandonedRound.published",
+        "eq": true
+      },
+      "declarationTruth": "no 24-hour / abandoned-round rule on the operator's fairness page when declared false",
+      "rtpClaimRule": null
+    }
+  ]
+}
